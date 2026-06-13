@@ -22,4 +22,4 @@ for i,item in enumerate(response['items']):
     print(f"\nVideo {i}")
     print("Title:", item["snippet"]["title"])
     print("Channel:", item["snippet"]["channelTitle"])
-    print("Video ID:", item["id"]["videoId"])
+    print("Video ID:", item["id"]["videoId"])~
