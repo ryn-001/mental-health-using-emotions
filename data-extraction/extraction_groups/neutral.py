@@ -3,26 +3,11 @@ from utils.comments_extraction import get_comments
 from utils.save_comments_to_csv import save_comments
 
 QUERIES = [
-    "today was normal",
-    "weather is nice",
-    "good morning",
-    "what are you doing",
-    "random thoughts",
-    "daily routine",
-    "ate lunch",
-    "going to work",
-    "watching TV",
-    "reading a book",
-    "walking outside",
-    "cooking dinner",
-    "shopping today",
-    "weekend plans",
-    "traffic today",
-    "learning python",
-    "new movie",
-    "travel plans",
-    "news update",
-    "general discussion"
+    "cricket highlights",
+    "football highlights",
+    "tech reviews",
+    "programming tutorials",
+    "travel vlogs"
 ]
 
 def get_neutral_comments_by_videos(youtube):

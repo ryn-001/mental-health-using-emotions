@@ -3,26 +3,10 @@ from utils.comments_extraction import get_comments
 from utils.save_comments_to_csv import save_comments
 
 QUERIES = [
-    "lonely",
-    "feel alone",
+    "feeling alone",
+    "loneliness",
     "social isolation",
-    "no friends",
-    "nobody talks to me",
-    "isolated",
-    "left out",
-    "friendless",
-    "don't belong",
-    "social anxiety",
-    "nobody understands me",
-    "need friends",
-    "alone every day",
-    "isolated from everyone",
-    "can't make friends",
-    "feel invisible",
-    "miss having friends",
-    "empty social life",
-    "ignored by everyone",
-    "feel disconnected"
+    "no friends"
 ]
 
 def get_loneliness_social_isolation_comments_by_videos(youtube):

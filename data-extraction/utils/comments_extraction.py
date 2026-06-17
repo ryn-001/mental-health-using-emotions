@@ -1,12 +1,11 @@
 import pandas as pd
 
-def get_comments(youtube, video_id, maxComments = 100) -> pd.DataFrame:
+def get_comments(youtube, video_id) -> pd.DataFrame:
     comments = []
 
     request = youtube.commentThreads().list(
         part="snippet",
         videoId=video_id,
-        maxResults=maxComments,
         textFormat="plainText"
     )
 

@@ -1,6 +1,23 @@
-MIN_COMMENTS = 500
+import re
 
-def get_comment_count(youtube, video_id):
+
+def contains_many_non_english_chars(
+    title: str,
+    threshold: int = 10
+) -> bool:
+
+    non_ascii = re.findall(
+        r'[^\x00-\x7F]',
+        title
+    )
+
+    return len(non_ascii) > threshold
+
+
+def get_comment_count(
+    youtube,
+    video_id
+) -> int:
 
     response = youtube.videos().list(
         part="statistics",
@@ -12,39 +29,130 @@ def get_comment_count(youtube, video_id):
 
     statistics = response["items"][0]["statistics"]
 
-    return int(statistics.get("commentCount", 0))
+    return int(
+        statistics.get(
+            "commentCount",
+            0
+        )
+    )
 
-def get_videos(youtube, queries) -> list:
+
+def get_videos(
+    youtube,
+    queries,
+    videos_per_query=5,
+    min_comments=500,
+    max_comments=1000
+):
 
     videos = []
 
     for query in queries:
 
-        response = youtube.search().list(
-            q=query,
-            part="snippet",
-            type="video",
-            maxResults=20
-        ).execute()
+        print(f"\nSearching query: {query}")
 
-        for item in response["items"]:
+        query_videos = 0
+        next_page_token = None
 
-            video_id = item["id"]["videoId"]
+        while query_videos < videos_per_query:
 
-            comment_count = get_comment_count(
-                youtube,
-                video_id
+            response = youtube.search().list(
+                q=query,
+                part="snippet",
+                type="video",
+                relevanceLanguage="en",
+                videoDuration="medium",
+                maxResults=50,
+                pageToken=next_page_token
+            ).execute()
+
+            items = response.get(
+                "items",
+                []
             )
 
-            if comment_count < MIN_COMMENTS:
-                continue
+            if not items:
+                break
 
-            videos.append({
-                "video_id": video_id,
-                "title": item["snippet"]["title"],
-                "channel": item["snippet"]["channelTitle"],
-                "query": query,
-                "comment_count": comment_count
-            })
+            for item in items:
+
+                video_id = item["id"]["videoId"]
+
+                title = item["snippet"]["title"]
+
+                if contains_many_non_english_chars(
+                    title
+                ):
+                    continue
+
+                try:
+
+                    comment_count = get_comment_count(
+                        youtube,
+                        video_id
+                    )
+
+                except Exception as e:
+
+                    print(
+                        f"Failed: {video_id}"
+                    )
+
+                    continue
+
+                if (
+                    comment_count < min_comments
+                    or
+                    comment_count > max_comments
+                ):
+                    continue
+
+                videos.append({
+
+                    "video_id":
+                        video_id,
+
+                    "title":
+                        title,
+
+                    "channel":
+                        item["snippet"][
+                            "channelTitle"
+                        ],
+
+                    "query":
+                        query,
+
+                    "comment_count":
+                        comment_count
+
+                })
+
+                query_videos += 1
+
+                print(
+                    f"✓ [{query_videos}/{videos_per_query}] "
+                    f"{title} "
+                    f"({comment_count} comments)"
+                )
+
+                if (
+                    query_videos
+                    >= videos_per_query
+                ):
+                    break
+
+            next_page_token = response.get(
+                "nextPageToken"
+            )
+
+            if not next_page_token:
+                break
+
+        print(
+            f"Collected "
+            f"{query_videos} videos "
+            f"for '{query}'"
+        )
 
     return videos
