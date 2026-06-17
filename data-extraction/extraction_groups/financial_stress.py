@@ -3,26 +3,10 @@ from utils.comments_extraction import get_comments
 from utils.save_comments_to_csv import save_comments
 
 QUERIES = [
-    "financial stress",
-    "money problems",
-    "can't pay bills",
-    "debt",
-    "loan repayment",
-    "credit card debt",
-    "living paycheck to paycheck",
-    "rent is too high",
-    "inflation",
-    "can't afford",
-    "financial anxiety",
-    "bankruptcy",
-    "lost savings",
-    "salary not enough",
-    "poor financial situation",
-    "cost of living",
-    "student loan",
-    "medical bills",
-    "struggling financially",
-    "no money"
+    "debt problems",
+    "financial crisis",
+    "money stress",
+    "job loss"
 ]
 
 def get_financial_stress_comments_by_videos(youtube):

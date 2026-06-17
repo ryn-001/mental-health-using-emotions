@@ -1,33 +1,43 @@
+from io import BytesIO
+import os
 import pandas as pd
-from pathlib import Path
+from dotenv import load_dotenv
+from azure.storage.blob import BlobClient
+
 
 def save_comments(comments_df: pd.DataFrame, group_name: str, video_id: str):
-    
-    project_root = Path(__file__).parent.parent.parent
 
-    save_dir = project_root / "data" / group_name
-    save_dir.mkdir(parents=True, exist_ok=True)
+    load_dotenv()
+    sas_token = os.getenv("SAS_TOKEN")
 
-    file_path = save_dir / f"{video_id}.csv"
+    if not sas_token:
+        raise ValueError("SAS_TOKEN not found in environment variables")
 
-    import pandas as pd
-from pathlib import Path
-
-def save_comments(comments_df: pd.DataFrame, group_name: str, video_id: str):
-    
-    project_root = Path(__file__).parent.parent.parent
-
-    save_dir = project_root / "data" / group_name
-    save_dir.mkdir(parents=True, exist_ok=True)
-
-    file_path = save_dir / f"{video_id}.csv"
-
-    comments_df.to_csv(
-        file_path,
-        mode="a",
-        header=not file_path.exists(),
-        index=False,
-        encoding="utf-8"
+    blob_url = (
+        "https://ytcommentstorage.blob.core.windows.net/"
+        f"raw-extracted-data/{group_name}/{video_id}.parquet"
     )
 
-    print(f"Saved {len(comments_df)} comments to {file_path}")
+    blob_client = BlobClient.from_blob_url(
+        blob_url=f"{blob_url}?{sas_token}"
+    )
+
+    parquet_buffer = BytesIO()
+
+    comments_df.to_parquet(
+        parquet_buffer,
+        engine="pyarrow",
+        index=False
+    )
+
+    parquet_buffer.seek(0)
+
+    blob_client.upload_blob(
+        parquet_buffer,
+        overwrite=True
+    )
+
+    print(
+        f"Saved {len(comments_df)} comments to "
+        f"{group_name}/{video_id}.parquet"
+    )

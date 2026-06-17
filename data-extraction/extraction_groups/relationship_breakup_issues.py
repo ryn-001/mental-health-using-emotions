@@ -3,26 +3,9 @@ from utils.comments_extraction import get_comments
 from utils.save_comments_to_csv import save_comments
 
 QUERIES = [
-    "breakup",
-    "heartbreak",
-    "relationship problems",
-    "toxic relationship",
-    "divorce",
-    "cheating",
-    "my ex",
-    "relationship ended",
-    "lost my partner",
-    "trust issues",
-    "love hurts",
-    "relationship anxiety",
-    "marriage problems",
     "breakup recovery",
-    "missing my ex",
-    "can't move on",
-    "unrequited love",
-    "relationship advice",
-    "partner left me",
-    "emotionally unavailable"
+    "heartbreak story",
+    "toxic relationship"
 ]
 
 def get_relationship_breakup_issues_comments_by_videos(youtube):
