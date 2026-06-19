@@ -1,4 +1,5 @@
 import pandas as pd
+from utils.save_df_to_path import save_df_to_path
 
 def structural_cleaning(path):
     df = pd.read_parquet(path)
@@ -26,7 +27,11 @@ def structural_cleaning(path):
     df = df[~df["comment_text"].isin(INVALID_TEXTS)]
 
     final_count = len(df)
+    video_id = path.split("/")[-1].split(".")[0]
+
     print(f"[Structural Cleaning] Removed comments {initial_count - final_count}")
-    print(f"[Structural Cleaning] Remaining comments: {final_count}", end="\n\n")
+    print(f"[Structural Cleaning] Remaining comments: {final_count}")
+    save_df_to_path(df,path, video_id)
+    print(f"[Structural Cleaning] Saved video {video_id} data")
 
 
