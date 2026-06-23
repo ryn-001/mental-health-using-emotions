@@ -3,3 +3,4 @@ data
 .env
 __pycache__
 main.ipynb
+node_modules
