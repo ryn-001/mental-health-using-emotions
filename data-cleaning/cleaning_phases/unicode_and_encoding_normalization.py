@@ -12,7 +12,7 @@ def normalize_unicode(text: str) -> str:
     text = ftfy.fix_text(text)
 
     # Unicode Normalization
-    text = unicodedata.normalize("NKFC",text)
+    text = unicodedata.normalize("NFKC",text)
 
     # Remove invisible characters
     text = re.sub(r'[\u200B-\u200D\uFEFF]', '', text)
@@ -22,16 +22,13 @@ def normalize_unicode(text: str) -> str:
 
     return text
 
-def unicode_and_encoding_normalization(path: str) -> pd.DataFrame:
-    df = pd.read_parquet(path)
+def unicode_and_encoding_normalization(df: pd.DataFrame) -> pd.DataFrame:
     
     initial_count = len(df)
     df["comment_text"] = df["comment_text"].apply(normalize_unicode)
     final_count = len(df)
 
-    video_id = path.split("/")[-1].split(".")[0]
     print(f"[Unicode and Encoding Normalization] Removed comments {initial_count - final_count}")
-    print(f"[Unicode and Encoding Normalization] Remaining comments: {final_count}")
-    print(f"[Unicode and Encoding Normalization] Saved video {video_id} data", end="\n\n")
+    print(f"[Unicode and Encoding Normalization] Remaining comments: {final_count}", end="\n\n")
 
     return df

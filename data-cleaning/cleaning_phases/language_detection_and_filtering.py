@@ -9,17 +9,14 @@ def keep_english_text(text: str) -> bool:
     except:
         return False
     
-def filter_english_text(path: str) -> pd.DataFrame:
-    df = pd.read_parquet(path)
-    
+def filter_english_text(df: pd.DataFrame) -> pd.DataFrame:
+        
     initial_count = len(df)
     df = df[df["comment_text"].apply(keep_english_text)].copy()
     final_count = len(df)
 
-    video_id = path.split("/")[-1].split(".")[0]
     print(f"[Language Detection and Filtering] Removed comments {initial_count - final_count}")
-    print(f"[Language Detection and Filtering] Remaining comments: {final_count}")
-    print(f"[Language Detection and Filtering] Saved video {video_id} data", end="\n\n")
-
+    print(f"[Language Detection and Filtering] Remaining comments: {final_count}",end="\n\n")
+    
     return df
     
