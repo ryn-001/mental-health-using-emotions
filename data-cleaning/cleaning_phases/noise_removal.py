@@ -17,8 +17,7 @@ def is_noise(text: str) -> bool:
 
     return True
 
-def noise_removal(path: str) -> pd.DataFrame:
-    df = pd.read_parquet(path)
+def noise_removal(df: pd.DataFrame) -> pd.DataFrame:
 
     initial_count = len(df)
 
@@ -26,10 +25,7 @@ def noise_removal(path: str) -> pd.DataFrame:
 
     final_count = len(df)
 
-    video_id = path.split("/")[-1].split(".")[0]
-
     print(f"[Noise Removal] Removed comments: {initial_count - final_count}")
-    print(f"[Noise Removal] Remaining comments: {final_count}")
-    print(f"[Noise Removal] Saved video {video_id} data", end="\n\n")
+    print(f"[Noise Removal] Remaining comments: {final_count}", end="\n\n")
 
     return df

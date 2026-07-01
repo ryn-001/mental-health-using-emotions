@@ -45,8 +45,7 @@ def is_spam(text: str) -> bool:
     return False
 
 
-def spam_bot_filtering(path: str) -> pd.DataFrame:
-    df = pd.read_parquet(path)
+def spam_bot_filtering(df: pd.DataFrame) -> pd.DataFrame:
 
     initial_count = len(df)
 
@@ -54,10 +53,7 @@ def spam_bot_filtering(path: str) -> pd.DataFrame:
 
     final_count = len(df)
 
-    video_id = path.split("/")[-1].split(".")[0]
-
     print(f"[Spam & Bot Filtering] Removed comments: {initial_count - final_count}")
-    print(f"[Spam & Bot Filtering] Remaining comments: {final_count}")
-    print(f"[Spam & Bot Filtering] Saved video {video_id} data", end="\n\n")
+    print(f"[Spam & Bot Filtering] Remaining comments: {final_count}",end="\n\n")
 
     return df

@@ -38,8 +38,7 @@ def normalize_social_text(text: str) -> str:
 
     return text
 
-def social_media_text_normalization(path: str) -> pd.DataFrame:
-    df = pd.read_parquet(path)
+def social_media_text_normalization(df:pd.DataFrame) -> pd.DataFrame:
 
     initial_count = len(df)
 
@@ -50,9 +49,6 @@ def social_media_text_normalization(path: str) -> pd.DataFrame:
 
     final_count = len(df)
 
-    video_id = path.split("/")[-1].split(".")[0]
     print(f"[Unicode and Encoding Normalization] Removed comments {initial_count - final_count}")
-    print(f"[Unicode and Encoding Normalization] Remaining comments: {final_count}")
-    print(f"[Unicode and Encoding Normalization] Saved video {video_id} data", end="\n\n")
-
+    print(f"[Unicode and Encoding Normalization] Remaining comments: {final_count}",end="\n\n")
     return df
