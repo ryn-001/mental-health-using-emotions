@@ -1,7 +1,7 @@
 from read_parquet_from_blob import read_parquet_from_blob
 from emotion_generator import generate_emotion_scores
 
-DATASET_NAME = "Anxiety"
+DATASET_NAME = "Depression"
 
 RESUME_COMMENT_ID = None
 
