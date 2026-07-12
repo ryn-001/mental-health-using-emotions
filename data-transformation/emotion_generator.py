@@ -1,10 +1,7 @@
 import logging
 import pandas as pd
 
-from emotion_model import (
-    get_emotion_scores,
-    GOEMOTIONS_LABELS
-)
+from emotion_model import get_emotion_scores
 from append_data_lake import append_emotion_to_datalake
 
 
@@ -34,6 +31,21 @@ def generate_emotion_scores(
         df = df.iloc[start_idx:].reset_index(drop=True)
 
         print(f"Resuming after comment_id={comment_id}")
+
+    original_count = len(df)
+
+    df["keep"] = (
+        df["keep"]
+        .astype(str)
+        .str.strip()
+        .str.lower()
+    )
+
+    df["keep"] = df["keep"].isin(["true", "1", "yes"])
+
+    df = df[df["keep"]].reset_index(drop=True)
+
+    print(f"Keeping {len(df)} of {original_count} comments.")
 
     total = len(df)
     emotion_rows = []
@@ -72,8 +84,7 @@ def generate_emotion_scores(
             append_emotion_to_datalake(emotion_df)
 
             print(
-                f"Uploaded batch "
-                f"({i}/{total})"
+                f"Uploaded batch ({i}/{total})"
             )
 
             emotion_rows = []
@@ -91,8 +102,7 @@ def generate_emotion_scores(
         append_emotion_to_datalake(emotion_df)
 
         print(
-            f"Uploaded final batch "
-            f"({len(emotion_df)} rows)"
+            f"Uploaded final batch ({len(emotion_df)} rows)"
         )
 
     print("Finished processing.")

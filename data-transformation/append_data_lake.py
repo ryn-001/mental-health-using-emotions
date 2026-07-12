@@ -23,7 +23,7 @@ def append_emotion_to_datalake(
 
     blob_url = (
         "https://ytcommentstorage.blob.core.windows.net/"
-        "transformed-data/not_llm_cleaned.parquet"
+        "transformed-data/llm_cleaned.parquet"
     )
 
     blob_client = BlobClient.from_blob_url(

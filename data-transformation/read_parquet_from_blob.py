@@ -17,7 +17,7 @@ def read_parquet_from_blob(dataset_name: str) -> pd.DataFrame:
 
     blob_url = (
         "https://ytcommentstorage.blob.core.windows.net/"
-        f"cleaned-data/{dataset_name}.parquet"
+        f"llm-cleaned-data/{dataset_name}.parquet"
     )
 
     blob_client = BlobClient.from_blob_url(
