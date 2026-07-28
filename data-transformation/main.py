@@ -15,7 +15,8 @@ def main():
     generate_emotion_scores(
         df=df,
         comment_id=RESUME_COMMENT_ID,
-        batch_size=BATCH_SIZE
+        batch_size=BATCH_SIZE,
+        dataset_name=DATASET_NAME
     )
 
 

@@ -8,7 +8,8 @@ from azure.core.exceptions import ResourceNotFoundError
 
 
 def append_emotion_to_datalake(
-    emotion_df: pd.DataFrame
+    emotion_df: pd.DataFrame,
+    dataset_name: str
 ) -> None:
 
     if emotion_df.empty:
@@ -23,7 +24,7 @@ def append_emotion_to_datalake(
 
     blob_url = (
         "https://ytcommentstorage.blob.core.windows.net/"
-        "transformed-data/llm_cleaned.parquet"
+        f"transformed-data/{dataset_name}.parquet"
     )
 
     blob_client = BlobClient.from_blob_url(

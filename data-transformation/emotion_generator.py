@@ -7,6 +7,7 @@ from append_data_lake import append_emotion_to_datalake
 
 def generate_emotion_scores(
     df: pd.DataFrame,
+    dataset_name: str,
     comment_id: str | None = None,
     batch_size: int = 1000
 ) -> None:
@@ -99,7 +100,7 @@ def generate_emotion_scores(
 
         emotion_df = pd.DataFrame(emotion_rows)
 
-        append_emotion_to_datalake(emotion_df)
+        append_emotion_to_datalake(emotion_df,dataset_name)
 
         print(
             f"Uploaded final batch ({len(emotion_df)} rows)"
